@@ -1,0 +1,45 @@
+@main-ss: #ff5733;
+@colors: #787373, #33ff57, #3357ff, #00f3d6, #a133ff;
+@borderRadius: 40px;
+
+.container {
+    background-color: @main-ss;
+    width: 500px;
+    height: 700px;
+    border-width: 10px;
+    border-radius: @borderRadius;
+}
+
+#txtTitulo{
+    font-size: 50px;
+
+}
+
+
+.apply-color(@index) when (@index >= 0) {
+    background-color: extract(@colors, @index);
+}
+
+.checkbox-list {
+    list-style-type: none; 
+    padding: 0;
+
+    li {
+        margin: 10px 0;
+        padding: 10px; 
+        border-radius: 4px;
+        color: white; 
+
+        &:nth-child(1) { .apply-color(0); }
+        &:nth-child(2) { .apply-color(1); }
+        &:nth-child(3) { .apply-color(2); }
+        &:nth-child(4) { .apply-color(3); }
+        &:nth-child(5) { .apply-color(4); }
+    }
+}
+
+
+
+
+
+

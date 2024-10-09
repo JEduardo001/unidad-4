@@ -1,0 +1,35 @@
+.container {
+  background-color: #ff5733;
+  width: 500px;
+  height: 700px;
+  border-width: 10px;
+  border-radius: 40px;
+}
+#txtTitulo {
+  font-size: 50px;
+}
+.checkbox-list {
+  list-style-type: none;
+  padding: 0;
+}
+.checkbox-list li {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  color: white;
+}
+.checkbox-list li:nth-child(1) {
+  background-color: extract(#787373, #33ff57, #3357ff, #00f3d6, #a133ff, 0);
+}
+.checkbox-list li:nth-child(2) {
+  background-color: #787373;
+}
+.checkbox-list li:nth-child(3) {
+  background-color: #33ff57;
+}
+.checkbox-list li:nth-child(4) {
+  background-color: #3357ff;
+}
+.checkbox-list li:nth-child(5) {
+  background-color: #00f3d6;
+}
