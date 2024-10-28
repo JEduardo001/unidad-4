@@ -84,46 +84,13 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-4 mb-4" >
-                        <div class="card">
-                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Producto 1">
-                            <div class="card-body">
-                                <h5 class="card-title">Producto 1</h5>
-                                <p class="card-text">Descripción del producto 1.</p>
-                                <a href="#" class="btn btn-primary"  onclick="showProductDetails('Producto 1', 'Descripción del producto 1.', '')">Agregar al carrito</a>
-                                <a href="#" class="btn btn-primary" onclick="showEditProduct()">Editar</a>
-
-                            </div>
-                        </div>
-                    </div>
-            
-                    <div class="col-md-4 mb-4" >
-                        <div class="card">
-                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Producto 2">
-                            <div class="card-body">
-                                <h5 class="card-title">Producto 2</h5>
-                                <p class="card-text">Descripción del producto 2.</p>
-                                <a href="#" class="btn btn-primary" onclick="showProductDetails('Producto 2', 'Descripción del producto 2.', '')">Agregar al carrito</a>
-                                <a href="#" class="btn btn-primary" onclick="showEditProduct()">Editar</a>
- 
-                            </div>
-                        </div>
-                    </div>
-            
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <img src="https://via.placeholder.com/150" class="card-img-top" alt="Producto 3">
-                            <div class="card-body">
-                                <h5 class="card-title">Producto 3</h5>
-                                <p class="card-text">Descripción del producto 3.</p>
-                                <a href="#" class="btn btn-primary"  onclick="showProductDetails('Producto 3', 'Descripción del producto 3.', '')">Agregar al carrito</a>
-                                <a href="#" class="btn btn-primary"  onclick="showEditProduct()">Editar</a>
-
-                            </div>
-                        </div>
+                <div class="container">
+                    <div class="row" id="product-list">
+                        <!-- Los productos se insertarán aquí mediante JavaScript -->
                     </div>
                 </div>
+
+               
             </main>
             
             <!-- Agregar al carrito -->
@@ -249,34 +216,74 @@
             </table>
             
             <script>
-            function showProductDetails(title, description, image) {
-                document.getElementById('modalTitle').innerText = title;
-                document.getElementById('modalDescription').innerText = description;
-                document.getElementById('modalImage').src = image;
-                $('#productModal').modal('show'); 
-            }
+                function showProductDetails(title, description, image) {
+                    document.getElementById('modalTitle').innerText = title;
+                    document.getElementById('modalDescription').innerText = description;
+                    document.getElementById('modalImage').src = image;
+                    $('#productModal').modal('show'); 
+                }
 
 
-            function showAddProductDetails() {
-                
-                $('#productAddModal').modal('show'); 
-            }
+                function showAddProductDetails() {
+                    
+                    $('#productAddModal').modal('show'); 
+                }
 
-            function showEditProduct() {
-                
-                $('#productEditModal').modal('show'); 
-            }
+                function showEditProduct() {
+                    
+                    $('#productEditModal').modal('show'); 
+                }
 
+
+
+
+
+                async function loadProducts() {
+                    try {
+                        const response = await fetch('controllerProductos.php'); 
+
+                        if (!response.ok) {
+                            throw new Error('Error en la red: ' + response.statusText);
+                        }
+
+                        const products = await response.json();
+                        console.log(products); 
+
+                        if (Array.isArray(products) && products.length > 0) {
+                            const productList = document.getElementById('product-list');
+                            productList.innerHTML = ''; 
+
+                            products.forEach(product => {
+                                const productCard = `
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card">
+                                        <img src="${product.cover}" 
+                                            class="card-img-top" 
+                                            alt="Descripción de ${product.name}" 
+                                            onerror="this.onerror=null; this.src='img.jpg';">
+
+                                            <div class="card-body">
+                                                <h5 class="card-title">${product.name}</h5>
+                                                <p class="card-text">${product.description}</p>
+                                                <a href="#" class="btn btn-primary" onclick="showProductDetails('${product.name}', 'Descripción no disponible.', '')">Agregar al carrito</a>
+                                                <a href="#" class="btn btn-primary" onclick="showEditProduct()">Editar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                                productList.innerHTML += productCard; 
+                            });
+                        } else {
+                            console.log('No se encontraron productos.');
+                        }
+                    } catch (error) {
+                        console.error('Error loading products:', error);
+                    }
+                }
+
+                loadProducts(); 
 
             </script>
-
-
-
-
-
-
-
-
         </div>
     </div>
 
