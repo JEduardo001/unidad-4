@@ -214,6 +214,32 @@
                     </tr>
                 </tbody>
             </table>
+
+
+
+
+            <!-- Modal de detalles productos -->
+            <div class="modal fade" id="productDetailsModal" tabindex="-1" role="dialog" aria-labelledby="productDetailsModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="productDetailsModalLabel">Detalles del Producto</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <img id="productImage" src="" alt="" class="img-fluid">
+                            <h5 id="productName"></h5>
+                            <p id="productDescription"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             
             <script>
                 function showProductDetails(title, description, image) {
@@ -233,6 +259,28 @@
                     
                     $('#productEditModal').modal('show'); 
                 }
+
+
+                
+                function showDetailsProduct(slug) {
+                    fetch(`details.php?slug=${slug}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                alert(data.error);
+                            } else {
+                                document.getElementById('productImage').src = data.cover; 
+                                document.getElementById('productName').textContent = data.name;
+                                document.getElementById('productDescription').textContent = data.features;
+                                
+                                $('#productDetailsModal').modal('show');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener los detalles del producto:', error);
+                        });
+                }
+
 
 
 
@@ -257,16 +305,17 @@
                                 const productCard = `
                                     <div class="col-md-4 mb-4">
                                         <div class="card">
-                                        <img src="${product.cover}" 
-                                            class="card-img-top" 
-                                            alt="Descripción de ${product.name}" 
-                                            onerror="this.onerror=null; this.src='img.jpg';">
+                                            <img src="${product.cover}" 
+                                                class="card-img-top" 
+                                                alt="Descripción de ${product.name}" 
+                                                onerror="this.onerror=null; this.src='img.jpg';">
 
                                             <div class="card-body">
                                                 <h5 class="card-title">${product.name}</h5>
                                                 <p class="card-text">${product.description}</p>
                                                 <a href="#" class="btn btn-primary" onclick="showProductDetails('${product.name}', 'Descripción no disponible.', '')">Agregar al carrito</a>
                                                 <a href="#" class="btn btn-primary" onclick="showEditProduct()">Editar</a>
+                                                <a href="#" class="btn btn-primary" onclick="showDetailsProduct('${product.slug}')">Detalles</a>
                                             </div>
                                         </div>
                                     </div>
@@ -280,6 +329,7 @@
                         console.error('Error loading products:', error);
                     }
                 }
+
 
                 loadProducts(); 
 
