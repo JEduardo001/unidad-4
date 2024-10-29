@@ -86,7 +86,6 @@
 
                 <div class="container">
                     <div class="row" id="product-list">
-                        <!-- Los productos se insertarán aquí mediante JavaScript -->
                     </div>
                 </div>
 
@@ -118,30 +117,43 @@
             <div class="modal fade" id="productAddModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <div>
-                                <p>Titulo</p>
-                                <input type="text">
+                        <form action="addProduct.php" method="POST"> 
+                            <div class="modal-header">
+                                <h1>Añadir Producto</h1>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                          
-                            <div>
-                                <p>Descripcion</p>
-                                <input type="text">
+                            <div class="modal-body">
+                                <ul>
+                                    <li>
+                                        <p>Nombre</p>
+                                        <input type="text" name="name" required>
+                                    </li>
+                                    <li>
+                                        <p>Slug</p>
+                                        <input type="text" name="slug" required>
+                                    </li>
+                                    <li>
+                                        <p>Descripción</p>
+                                        <input type="text" name="description" required>
+                                    </li>
+                                    <li>
+                                        <p>Features</p>
+                                        <input type="text" name="features" required>
+                                    </li>
+                                </ul>
                             </div>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <img id="modalImage" src="" alt="Producto" class="img-fluid">
-                            <h5 id="modalTitle"></h5>
-                            <p id="modalDescription"></p>
-                        </div>
-                        <button>Anadir</button>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Añadir</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-
+            
+            
 
               <!-- Editar producto -->
 
@@ -280,8 +292,6 @@
                             console.error('Error al obtener los detalles del producto:', error);
                         });
                 }
-
-
 
 
 
