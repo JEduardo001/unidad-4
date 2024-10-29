@@ -113,13 +113,12 @@
 
             <!-- Anadir producto -->
 
-
-            <div class="modal fade" id="productAddModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+            <div class="modal fade" id="productEditModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <form action="addProduct.php" method="POST"> 
+                        <form action="editProduct.php" method="POST"> 
                             <div class="modal-header">
-                                <h1>Añadir Producto</h1>
+                                <h1>Editar Producto</h1>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -127,25 +126,29 @@
                             <div class="modal-body">
                                 <ul>
                                     <li>
+                                        <p>ID del Producto</p>
+                                        <input type="hidden" name="product_id" id="editProductId" required>
+                                    </li>
+                                    <li>
                                         <p>Nombre</p>
-                                        <input type="text" name="name" required>
+                                        <input type="text" name="name" id="editProductName" required>
                                     </li>
                                     <li>
                                         <p>Slug</p>
-                                        <input type="text" name="slug" required>
+                                        <input type="text" name="slug" id="editProductSlug" required>
                                     </li>
                                     <li>
                                         <p>Descripción</p>
-                                        <input type="text" name="description" required>
+                                        <input type="text" name="description" id="editProductDescription" required>
                                     </li>
                                     <li>
                                         <p>Features</p>
-                                        <input type="text" name="features" required>
+                                        <input type="text" name="features" id="editProductFeatures" required>
                                     </li>
                                 </ul>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Añadir</button>
+                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </form>
@@ -154,38 +157,55 @@
             </div>
             
             
+            
+            
 
               <!-- Editar producto -->
 
 
-              <div class="modal fade" id="productEditModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+            <div class="modal fade" id="productEditModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                           
-                            <div>
-                                <p>Titulo</p>
-                                <input type="text">
+                        <form action="editProduct.php" method="POST"> 
+                            <div class="modal-header">
+                                <h1>Editar Producto</h1>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                          
-                            <div>
-                                <p>Descripcion</p>
-                                <input type="text">
+                            <div class="modal-body">
+                                <ul>
+                                    <li>
+                                        <p>ID del Producto</p>
+                                        <input type="hidden" name="product_id" id="editProductId" required>
+                                    </li>
+                                    <li>
+                                        <p>Nombre</p>
+                                        <input type="text" name="name" id="editProductName" required>
+                                    </li>
+                                    <li>
+                                        <p>Slug</p>
+                                        <input type="text" name="slug" id="editProductSlug" required>
+                                    </li>
+                                    <li>
+                                        <p>Descripción</p>
+                                        <input type="text" name="description" id="editProductDescription" required>
+                                    </li>
+                                    <li>
+                                        <p>Features</p>
+                                        <input type="text" name="features" id="editProductFeatures" required>
+                                    </li>
+                                </ul>
                             </div>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <img id="modalImage" src="" alt="Producto" class="img-fluid">
-                            <h5 id="modalTitle"></h5>
-                            <p id="modalDescription"></p>
-                        </div>
-                        <button>Anadir</button>
+                            <div class="modal-footer">
+
+                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-
 
 
 
@@ -293,6 +313,17 @@
                         });
                 }
 
+                function openEditModal(product) {
+                    console.log(product); 
+                    $('#editProductId').val(product.id);
+                    $('#editProductName').val(product.name);
+                    $('#editProductSlug').val(product.slug);
+                    $('#editProductDescription').val(product.description);
+                    $('#editProductFeatures').val(product.features);
+                    
+                    $('#productEditModal').modal('show');
+                }
+
 
 
 
@@ -324,7 +355,7 @@
                                                 <h5 class="card-title">${product.name}</h5>
                                                 <p class="card-text">${product.description}</p>
                                                 <a href="#" class="btn btn-primary" onclick="showProductDetails('${product.name}', 'Descripción no disponible.', '')">Agregar al carrito</a>
-                                                <a href="#" class="btn btn-primary" onclick="showEditProduct()">Editar</a>
+                                                <a href="#" class="btn btn-primary" onclick="showEditProduct(openEditModal({id: '${product.id}', name: '${product.name}', slug: '${product.slug}', description: '${product.description}', features: '${product.features}'}))">Editar</a>
                                                 <a href="#" class="btn btn-primary" onclick="showDetailsProduct('${product.slug}')">Detalles</a>
                                             </div>
                                         </div>
