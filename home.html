@@ -113,12 +113,12 @@
 
             <!-- Anadir producto -->
 
-            <div class="modal fade" id="productEditModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+            <div class="modal fade" id="productAddModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <form action="editProduct.php" method="POST"> 
+                        <form action="addProduct.php" method="POST"> 
                             <div class="modal-header">
-                                <h1>Editar Producto</h1>
+                                <h1>Añadir Producto</h1>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -126,35 +126,33 @@
                             <div class="modal-body">
                                 <ul>
                                     <li>
-                                        <p>ID del Producto</p>
-                                        <input type="hidden" name="product_id" id="editProductId" required>
-                                    </li>
-                                    <li>
                                         <p>Nombre</p>
-                                        <input type="text" name="name" id="editProductName" required>
+                                        <input type="text" name="name" required>
                                     </li>
                                     <li>
                                         <p>Slug</p>
-                                        <input type="text" name="slug" id="editProductSlug" required>
+                                        <input type="text" name="slug" required>
                                     </li>
                                     <li>
                                         <p>Descripción</p>
-                                        <input type="text" name="description" id="editProductDescription" required>
+                                        <input type="text" name="description" required>
                                     </li>
                                     <li>
                                         <p>Features</p>
-                                        <input type="text" name="features" id="editProductFeatures" required>
+                                        <input type="text" name="features" required>
                                     </li>
                                 </ul>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                <button type="submit" class="btn btn-primary">Añadir</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+            
+            
             
             
             
@@ -206,6 +204,39 @@
                     </div>
                 </div>
             </div>
+
+
+
+
+               <!-- Elimianar producto -->
+               <div class="modal fade" id="productDeleteModal" tabindex="-1" role="dialog" aria-labelledby="productDeleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="productDeleteModalLabel">Confirmar Eliminación</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>¿Está seguro de que desea eliminar este producto?</p>
+                            <p><strong>ID del Producto: <span id="deleteProductId"></span></strong></p>
+                            <p><strong>Nombre: <span id="deleteProductName"></span></strong></p>
+                        </div>
+                        <div class="modal-footer">
+                            <form id="deleteProductForm" action="deleteProduct.php" method="POST">
+                                <input type="hidden" name="product_id" id="deleteProductIdInput">
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+
+
 
 
 
@@ -272,7 +303,8 @@
                 </div>
             </div>
 
-            
+          
+ 
             <script>
                 function showProductDetails(title, description, image) {
                     document.getElementById('modalTitle').innerText = title;
@@ -283,7 +315,7 @@
 
 
                 function showAddProductDetails() {
-                    
+                    console.log("sssssssssssss")
                     $('#productAddModal').modal('show'); 
                 }
 
@@ -324,6 +356,19 @@
                     $('#productEditModal').modal('show');
                 }
 
+                function showEliminarProduct(productId, productName) {
+                    const modal = $('#productDeleteModal');
+                    
+                    modal.find('#deleteProductId').text(productId);
+                    modal.find('#deleteProductName').text(productName);
+                    modal.find('#deleteProductIdInput').val(productId);
+                    
+                    modal.modal('show');
+                }
+
+
+            
+
 
 
 
@@ -357,6 +402,8 @@
                                                 <a href="#" class="btn btn-primary" onclick="showProductDetails('${product.name}', 'Descripción no disponible.', '')">Agregar al carrito</a>
                                                 <a href="#" class="btn btn-primary" onclick="showEditProduct(openEditModal({id: '${product.id}', name: '${product.name}', slug: '${product.slug}', description: '${product.description}', features: '${product.features}'}))">Editar</a>
                                                 <a href="#" class="btn btn-primary" onclick="showDetailsProduct('${product.slug}')">Detalles</a>
+                                                <a href="#" class="btn btn-primary" onclick="showEliminarProduct('${product.id}', '${product.name}')">Eliminar</a>
+
                                             </div>
                                         </div>
                                     </div>
