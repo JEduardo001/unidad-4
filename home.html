@@ -112,11 +112,10 @@
             </div>
 
             <!-- Anadir producto -->
-
             <div class="modal fade" id="productAddModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <form action="addProduct.php" method="POST"> 
+                        <form action="addProduct.php" method="POST" enctype="multipart/form-data"> 
                             <div class="modal-header">
                                 <h1>Añadir Producto</h1>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -141,6 +140,10 @@
                                         <p>Features</p>
                                         <input type="text" name="features" required>
                                     </li>
+                                    <li>
+                                        <p>Imagen</p>
+                                        <input type="file" name="image" accept="image/*" required>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="modal-footer">
@@ -151,6 +154,8 @@
                     </div>
                 </div>
             </div>
+
+
             
             
             
