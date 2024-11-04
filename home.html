@@ -144,6 +144,12 @@
                                         <p>Imagen</p>
                                         <input type="file" name="image" accept="image/*" required>
                                     </li>
+                                    <li>
+                                        <p>Marca</p>
+                                        <select name="brand_id" required>
+                                            <option value="">Seleccione una marca</option>
+                                        </select>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="modal-footer">
@@ -328,6 +334,31 @@
                     
                     $('#productEditModal').modal('show'); 
                 }
+
+                function cargarMarcas() {
+                    fetch('getBrands.php') 
+                        .then(response => response.json())
+                        .then(data => {
+                            const select = document.querySelector('select[name="brand_id"]');
+                            select.innerHTML = '<option value="">Seleccione una marca</option>'; 
+
+                            if (data.error) {
+                                console.error(data.error); 
+                                return;
+                            }
+
+                            data.data.forEach(marca => {
+                                const option = document.createElement('option');
+                                option.value = marca.id;
+                                option.textContent = marca.name;
+                                select.appendChild(option); 
+                            });
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+
+                window.onload = cargarMarcas;
+
 
 
                 
