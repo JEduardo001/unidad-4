@@ -10,6 +10,12 @@ if (!isset($_SESSION['token'])) {
 $apiUrl = 'https://crud.jonathansoto.mx/api/products';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (!isset($_SESSION['global_token']) || $token !== $_SESSION['global_token']) {
+        echo "Token inválido.";
+        exit();
+    }
+
     $productId = $_POST['product_id'] ?? null;
 
     if (!$productId) {
@@ -30,6 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $http_response_code = $http_response_header[0];
 
 
-    header("Location: home.html?message=" . urlencode($message));
+    header("Location: home.php?message=" . urlencode($message));
 }
 ?>

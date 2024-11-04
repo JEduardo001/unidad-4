@@ -10,6 +10,13 @@ if (!isset($_SESSION['token'])) {
 $apiUrl = 'https://crud.jonathansoto.mx/api/products';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (!isset($_SESSION['global_token']) || $token !== $_SESSION['global_token']) {
+        echo "Token inválido.";
+        exit();
+    }
+
+
     $productId = $_POST['product_id'] ?? null;
     $name = $_POST['name'] ?? null;
     $slug = $_POST['slug'] ?? null;
@@ -17,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $features = $_POST['features'] ?? null;
 
     if (!$productId || !$name || !$slug || !$description || !$features) {
-        echo json_encode(['error' => 'Datos incompletos.']);
+        echo json_encode(['error' => 'Datos incompletos.  ',$productId, $name, $slug, $description, $features]);
         exit();
     }
 
@@ -42,25 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $response = @file_get_contents($apiUrl, false, $context);
     $http_response_code = $http_response_header[0];
 
-    header("Location: home.html?message=" . urlencode($message));
+    header("Location: home.php?message=" . urlencode($message));
 
 
-    /* if ($response === FALSE) {
-        echo json_encode(['error' => 'No se pudo actualizar el producto.', 'headers' => $http_response_header]);
-        exit();
-    }
-
-    if (strpos($http_response_code, '200') === false) {
-        echo json_encode(['error' => 'Error HTTP: ' . $http_response_code]);
-        exit();
-    }
-
-    $responseData = json_decode($response, true);
-
-    if (isset($responseData['success'])) {
-        echo json_encode(['success' => 'Producto actualizado exitosamente.']);
-    } else {
-        echo json_encode(['error' => 'Error al actualizar el producto: ' . json_encode($responseData)]);
-    } */
+    
 }
 ?>

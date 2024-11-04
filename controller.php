@@ -1,11 +1,24 @@
 <?php
-// Esto es para ver los errores 
+session_start();
+
+if (empty($_SESSION['global_token'])) {
+    $_SESSION['global_token'] = bin2hex(random_bytes(32));
+}
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-session_start();
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $token = $_POST['global_token'] ?? null;
+    echo "Token enviado ",$token;
+
+    if (!isset($_SESSION['global_token']) || $token !== $_SESSION['global_token']) {
+        echo "Token inválido.";
+        echo "  de la session ",$_SESSION['global_token'];
+
+        exit();
+    }
+
     $email = $_POST['email'];
     $password = $_POST['password'];
 
@@ -31,11 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = json_decode($response, true);
         if (isset($result['data']['token'])) {
             $_SESSION['token'] = $result['data']['token'];
-            header('Location: home.html');
+            header('Location: home.php');
             exit();
         } else {
             $error = "Login fallido: " . htmlspecialchars($result['error']);
-            
             echo $error;
         }
     } else {
@@ -64,13 +76,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($responseData['data']) && is_array($responseData['data'])) {
         foreach ($responseData['data'] as $product) {
-            echo "<div>{$product['name']}</div>"; 
+           /*  echo "<div>{$product['name']}</div>";  */
         }
     } else {
         echo json_encode([]);
     }
 } else {
-    header("Location: index.html");
+    header("Location: index.php");
     exit();
 }
 ?>

@@ -10,6 +10,12 @@ if (!isset($_SESSION['token'])) {
 $apiUrl = 'https://crud.jonathansoto.mx/api/products';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (!isset($_SESSION['global_token']) || $token !== $_SESSION['global_token']) {
+        echo "Token inválido.";
+        exit();
+    }
+
     $name = $_POST['name'] ?? null;
     $slug = $_POST['slug'] ?? null;
     $description = $_POST['description'] ?? null;
@@ -47,22 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $http_response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    if ($response === FALSE) {
-        echo json_encode(['error' => 'No se pudo añadir el producto.']);
-        exit();
-    }
+    header("Location: home.php?message=" . urlencode($message));
 
-    if ($http_response_code !== 200) {
-        echo json_encode(['error' => 'Error HTTP: ' . $http_response_code]);
-        exit();
-    }
 
-    $responseData = json_decode($response, true);
 
-    if (isset($responseData['success'])) {
-        echo json_encode(['success' => 'Producto añadido exitosamente.']);
-    } else {
-        echo json_encode(['error' => 'Error al añadir el producto: ' . json_encode($responseData)]);
-    }
 }
 ?>
